@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Ionic.Zip;
+using System.Text.RegularExpressions;
 
 namespace DirArh
 {
@@ -65,13 +66,15 @@ namespace DirArh
         {
             Console.WriteLine("Enter the file extension:");
             pattern = Console.ReadLine();
-            if (pattern.Substring(0,1) == ".")
-            {
-                pattern.Insert(0, "*");
-            }
             if (pattern == String.Empty)
             {
                 pattern = "*";
+            } else if (Regex.IsMatch(pattern[1].ToString(), @"[.]+$"))
+            {
+                pattern = string.Format("{0}{1}","*",pattern);
+            } else if (Regex.IsMatch(pattern[1].ToString(), @"[а-яА-ЯёЁa-zA-Z0-9]+$"))
+            {
+                pattern = string.Format("{0}{1}", "*.", pattern);
             }
         }
 
